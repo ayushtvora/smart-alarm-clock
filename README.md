@@ -16,4 +16,3 @@ I want to make an app-controlled alarm clock. I don't know how.
 - Scheduled alarms based on sunrise for weekends.
 - Play notifications about weather, daily tasks, and any reminders when waking up.
 - Notify when it is bedtime.
-- 
