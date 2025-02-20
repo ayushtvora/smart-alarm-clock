@@ -1,0 +1,4 @@
+### Check if server runs
+GET http://localhost:8000/
+
+###
