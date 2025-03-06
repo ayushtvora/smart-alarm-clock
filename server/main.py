@@ -1,13 +1,13 @@
+import bson
 from fastapi import FastAPI
-from dotenv import load_dotenv
-import os
-import pymongo
-from WeatherClient import WeatherClient
 
-load_dotenv()
-weather_api_key = os.getenv("WEATHER_API_KEY")
-mongo_client = pymongo.MongoClient(os.getenv("MONGO_URI"))
+from WeatherClient import WeatherClient
+from AtlasClient import AtlasClient
+
+
 weather_client = WeatherClient("vancouver")
+atlas_client = AtlasClient("alarm-clock-db")
+current_user = None
 app = FastAPI()
 
 
@@ -41,8 +41,18 @@ def weather(city: str):
     forecast = weather_client.get_weather_data()
     return {"status": 200, "data": forecast}
 
+@app.get("/mongo-view-dump/")
+def mongo_ping():
+    atlas_client.ping()
+    collection = atlas_client.find("users")
+    for doc in collection:
+        del doc["_id"]
+    return {"status": 200, "data": collection}
 
-# @app.get("/user-info/{id}")
-# async def user_info(id: int):
-#
-#     return {};
+@app.get("/mongo-view-dump/{collection_name}")
+
+
+
+@app.get("/user-info/{id}")
+async def user_info(id: int):
+    return {"status": 501}

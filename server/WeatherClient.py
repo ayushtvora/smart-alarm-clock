@@ -5,9 +5,9 @@ import requests
 
 class WeatherClient:
     def __init__(self, city: str):
+        load_dotenv()
         self.weather_data_raw = None
         self.weather_data = None
-        load_dotenv()
         self.api_key = os.getenv("WEATHER_API_KEY")
         self.base_url = "http://api.weatherapi.com/v1/forecast.json?"
         self.city = city
@@ -17,7 +17,6 @@ class WeatherClient:
         self.update_weather_data()
         return self.weather_data
 
-
     def get_weather_data_raw(self):
         self.update_weather_data()
         return self.weather_data_raw
@@ -26,12 +25,10 @@ class WeatherClient:
         self.city = city
         return self.city
 
-
     def update_weather_data(self):
         url = self.base_url + f"key={self.api_key}&q={self.city}"
         self.weather_data_raw = requests.get(url).json()
         self.weather_data = self.parse_raw()
-
 
     def parse_raw(self, response=None):
         if response is None:

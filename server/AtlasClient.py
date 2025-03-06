@@ -1,12 +1,14 @@
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 
 class AtlasClient:
-
-   def __init__ (self, altas_uri, dbname):
-       self.mongodb_client = MongoClient(altas_uri)
+   def __init__(self, dbname):
+       load_dotenv()
+       self.uri = os.getenv("MONGO_URI")
+       self.mongodb_client = MongoClient(self.uri)
        self.database = self.mongodb_client[dbname]
 
-   ## A quick way to test if we can connect to Atlas instance
    def ping (self):
        self.mongodb_client.admin.command('ping')
 
