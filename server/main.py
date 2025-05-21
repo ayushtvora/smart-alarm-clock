@@ -10,17 +10,14 @@ atlas_client = AtlasClient("alarm-clock-db")
 current_user = None
 app = FastAPI()
 
-
 @app.get("/")
 def root():
     return {"status": 200, "data": {"message": "Hello World"}}
-
 
 @app.get("/weather-raw/")
 def weather_raw():
     response = weather_client.get_weather_data_raw()
     return {"status": 200, "data": response}
-
 
 @app.get("/weather-raw/{city}")
 def weather_raw(city: str):
@@ -28,12 +25,10 @@ def weather_raw(city: str):
     response = weather_client.get_weather_data_raw()
     return {"status": 200, "data": response}
 
-
 @app.get("/weather/")
 def weather():
     forecast = weather_client.get_weather_data()
     return {"status": 200, "data" : forecast}
-
 
 @app.get("/weather/{city}")
 def weather(city: str):
@@ -49,8 +44,14 @@ def mongo_ping():
         del doc["_id"]
     return {"status": 200, "data": collection}
 
-@app.get("/mongo-view-dump/{collection_name}")
-
+@app.get("/find-user/{email}/{password_hash}")
+def find_user(email: str, password_hash: str):
+    user = atlas_client.get_user(email, password_hash)
+    # if len(user) == 0:
+    #     return {"status": 404, "data": {"message": "User not found"}}
+    # del user[0]["_id"]
+    # return {"status": 200, "data": {"email": email, "password_hash": password_hash}}
+    return {"status": 200, "data": user}
 
 
 @app.get("/user-info/{id}")
